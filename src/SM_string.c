@@ -18,9 +18,19 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include "string.h"
+#include "SM_string.h"
 
 static const uint32_t SM_STRING_IMPLICIT_INITIAL_SIZE = 4;
+
+size_t SM_strlen( const char *cstr )
+{
+	size_t result = 0;
+
+	while (cstr[result] != '\0')
+		result++;
+
+	return result;
+}
 
 void SM_String_grow( SM_String *str )
 {
@@ -42,13 +52,7 @@ SM_String SM_String_new( size_t inital_size )
 SM_String SM_String_from( const char *cstr )
 {
 	SM_String result = SM_String_new(SM_STRING_IMPLICIT_INITIAL_SIZE);
-	uint_fast32_t strlen = 0;
-
-	// get strlen
-	for (uint_fast32_t i = 0; cstr[i] != '\0'; i++)
-	{
-		strlen++;
-	}
+	const size_t strlen = SM_strlen(cstr);
 
 	SM_String temp = {
 		.str = (char*) cstr,
@@ -60,6 +64,18 @@ SM_String SM_String_from( const char *cstr )
 	SM_String_copy(&result, &temp);
 
 	return result;
+}
+
+SM_String SM_String_contain( const char *cstr )
+{
+    const size_t strlen = SM_strlen(cstr);
+    const SM_String result = {
+    	.len = strlen,
+    	.size = strlen,
+    	.str = (char*) cstr
+    };
+
+    return result;
 }
 
 void SM_String_copy( SM_String *restrict dest, SM_String *restrict src )

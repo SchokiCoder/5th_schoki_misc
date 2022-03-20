@@ -16,33 +16,11 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
-#include <time.h>
-#include "log.h"
+#ifndef SM_SM_H
+#define SM_SM_H
 
-FILE *SM_logfile;
+#define SM_API_MAJOR 0
+#define SM_API_MINOR 1
+#define SM_API_PATCH 1
 
-void SM_log_time( void )
-{
-    time_t t = time(NULL);
-    struct tm *dt;
-    dt = localtime(&t);
-
-	fprintf(
-		SM_logfile,
-		"[%i-%02i-%02i %02i:%02i:%02i] ",
-		dt->tm_year + 1900, dt->tm_mon + 1, dt->tm_mday,
-		dt->tm_hour, dt->tm_min, dt->tm_sec);
-}
-
-void SM_log_err( const char *msg )
-{
-	SM_log_time();
-	fprintf(SM_logfile, "ERROR: %s\n", msg);
-}
-
-void SM_log_warn( const char *msg )
-{
-	SM_log_time();
-	fprintf(SM_logfile, "WARNING: %s\n", msg);
-}
+#endif /* SM_SM_H */

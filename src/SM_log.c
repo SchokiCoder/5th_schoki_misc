@@ -16,26 +16,33 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef SM_STRING_H
-#define SM_STRING_H
+#include <stdio.h>
+#include <time.h>
+#include "SM_log.h"
 
-#include <stddef.h>
+FILE *SM_logfile;
 
-typedef struct SM_String
+void SM_log_time( void )
 {
-	size_t len;
-	size_t size;
-	char *str;
-} SM_String ;
+    time_t t = time(NULL);
+    struct tm *dt;
+    dt = localtime(&t);
 
-SM_String SM_String_new( size_t initial_size );
+	fprintf(
+		SM_logfile,
+		"[%i-%02i-%02i %02i:%02i:%02i] ",
+		dt->tm_year + 1900, dt->tm_mon + 1, dt->tm_mday,
+		dt->tm_hour, dt->tm_min, dt->tm_sec);
+}
 
-SM_String SM_String_from( const char *cstr );
+void SM_log_err( const char *msg )
+{
+	SM_log_time();
+	fprintf(SM_logfile, "ERROR: %s\n", msg);
+}
 
-void SM_String_copy( SM_String *restrict dest, SM_String *restrict src );
-
-void SM_String_append( SM_String *restrict dest, SM_String *restrict addendum );
-
-void SM_String_clear( SM_String *str );
-
-#endif /* SM_STRING_H */
+void SM_log_warn( const char *msg )
+{
+	SM_log_time();
+	fprintf(SM_logfile, "WARNING: %s\n", msg);
+}

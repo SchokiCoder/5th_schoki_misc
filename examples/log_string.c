@@ -16,8 +16,8 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "string.h"
-#include "log.h"
+#include "SM_string.h"
+#include "SM_log.h"
 
 typedef SM_String String;
 
@@ -28,7 +28,7 @@ int main()
 	SM_log_warn("Oh no, i don't have a string yet.");
 
 	String str = SM_String_from("my new teeny tiny itsy bitsy string");
-	String addendum = SM_String_from(", i like it");
+	String addendum = SM_String_contain(", i like it");
 
     if (str.len < 40)
     	SM_log_err("My string is so small, is funny to me.");
@@ -39,6 +39,8 @@ int main()
     	SM_log_warn(str.str);
 
     fclose(SM_logfile);
+
+    SM_String_clear(&str);
 
 	return 0;
 }

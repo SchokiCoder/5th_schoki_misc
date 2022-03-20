@@ -16,11 +16,28 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef SM_SM_H
-#define SM_SM_H
+#ifndef SM_STRING_H
+#define SM_STRING_H
 
-#define SM_API_MAJOR 0
-#define SM_API_MINOR 1
-#define SM_API_PATCH 0
+#include <stddef.h>
 
-#endif /* SM_SM_H */
+typedef struct SM_String
+{
+	size_t len;
+	size_t size;
+	char *str;
+} SM_String ;
+
+SM_String SM_String_new( size_t initial_size );
+
+SM_String SM_String_from( const char *cstr );
+
+SM_String SM_String_contain( const char *cstr );
+
+void SM_String_copy( SM_String *restrict dest, SM_String *restrict src );
+
+void SM_String_append( SM_String *restrict dest, SM_String *restrict addendum );
+
+void SM_String_clear( SM_String *str );
+
+#endif /* SM_STRING_H */
