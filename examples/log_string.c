@@ -27,20 +27,27 @@ int main()
 
 	SM_log_warn("Oh no, i don't have a string yet.");
 
-	String str = SM_String_from("my new teeny tiny itsy bitsy string");
-	String addendum = SM_String_contain(", i like it");
+	String str_from = SM_String_from("my new teeny tiny itsy bitsy string");
+	String str_contain = SM_String_contain(", i like it");
 
-    if (str.len < 40)
+    if (str_from.len < 40)
     	SM_log_err("My string is so small, is funny to me.");
 
-    SM_String_append(&str, &addendum);
+    SM_String_append(&str_from, &str_contain);
 
-    if (str.len > 40)
-    	SM_log_warn(str.str);
+    if (str_from.len > 40)
+		SM_log_warn(str_from.str);
+
+	String str_copy = SM_String_new(8);
+	String str_tocopy = SM_String_contain("i got copied");
+	SM_String_copy(&str_copy, &str_tocopy);
+
+	SM_log_warn(str_copy.str);
 
     fclose(SM_logfile);
 
-    SM_String_clear(&str);
+    SM_String_clear(&str_from);
+    SM_String_clear(&str_copy);
 
 	return 0;
 }

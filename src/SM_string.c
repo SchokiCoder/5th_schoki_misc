@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include "SM_string.h"
 
-static const uint32_t SM_STRING_IMPLICIT_INITIAL_SIZE = 4;
+static const uint32_t SM_STRING_IMPLICIT_INITIAL_SIZE = 8;
 
 size_t SM_strlen( const char *cstr )
 {
@@ -81,7 +81,7 @@ SM_String SM_String_contain( const char *cstr )
 void SM_String_copy( SM_String *restrict dest, SM_String *restrict src )
 {
 	// as long as dest has not enough size, grow
-    while (src->len > dest->size)
+    while ((src->len + 1) > dest->size)
     	SM_String_grow(dest);
 
     // copy
@@ -89,6 +89,8 @@ void SM_String_copy( SM_String *restrict dest, SM_String *restrict src )
     {
         dest->str[i] = src->str[i];
     }
+
+    dest->str[src->len] = '\0';
 
     // update len
     dest->len = src->len;
