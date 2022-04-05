@@ -99,7 +99,7 @@ void SM_String_copy( SM_String *restrict dest, SM_String *restrict src )
 void SM_String_append( SM_String *restrict dest, SM_String *restrict addendum )
 {
 	// as long as dest has not enough size, grow
-	while (dest->size < (dest->len + addendum->len))
+	while (dest->size < (dest->len + addendum->len + 1))
 		SM_String_grow(dest);
 
 	// copy to end of src
@@ -107,6 +107,8 @@ void SM_String_append( SM_String *restrict dest, SM_String *restrict addendum )
 	{
 		dest->str[dest->len + i] = addendum->str[i];
 	}
+
+	dest->str[dest->len + addendum->len] = '\0';
 
 	// update len
 	dest->len += addendum->len;
