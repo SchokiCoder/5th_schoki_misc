@@ -16,17 +16,16 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef SM_LOG_H
-#define SM_LOG_H
+#include "SM_crypto.h"
 
-#include <stdio.h>
+uint32_t SM_djb2_encode( const char *str )
+{
+	// credits to Daniel J. Bernstein for this algorithm
+	uint32_t result = 5381;
+	char temp;
 
-#define SM_PATH_LOG "log.txt"
+	while ((temp = *(str++)))
+		result += ((result << 5) + result) + temp;
 
-extern FILE *SM_logfile;
-
-void SM_log_err( const char *msg );
-
-void SM_log_warn( const char *msg );
-
-#endif // SM_LOG_H
+	return result;
+}

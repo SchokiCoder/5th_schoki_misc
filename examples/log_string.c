@@ -16,6 +16,7 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "SM_crypto.h"
 #include "SM_string.h"
 #include "SM_log.h"
 
@@ -23,10 +24,11 @@ typedef SM_String String;
 
 int main()
 {
+	// log
 	SM_logfile = fopen(SM_PATH_LOG, "a");
-
 	SM_log_warn("Oh no, i don't have a string yet.");
 
+	// string from, contain, append
 	String str_from = SM_String_from("my new teeny tiny itsy bitsy string");
 	String str_contain = SM_String_contain(", i like it");
 
@@ -38,16 +40,57 @@ int main()
     if (str_from.len > 40)
 		SM_log_warn(str_from.str);
 
+	SM_String_clear(&str_from);
+
+	// string copy
 	String str_copy = SM_String_new(8);
 	String str_tocopy = SM_String_contain("i got copied");
 	SM_String_copy(&str_copy, &str_tocopy);
 
 	SM_log_warn(str_copy.str);
 
-    fclose(SM_logfile);
-
-    SM_String_clear(&str_from);
     SM_String_clear(&str_copy);
+
+    // copy cstring
+    const char *cstr = "my cstring";
+    String copy_cstr = SM_String_new(8);
+
+    SM_String_copy_cstr(&copy_cstr, cstr);
+
+    SM_log_warn(copy_cstr.str);
+
+    SM_String_clear(&copy_cstr);
+
+    // append cstring
+    String append_cstr = SM_String_from("SM_string now with ");
+
+    SM_String_append_cstr(&append_cstr, cstr);
+
+    SM_log_warn(append_cstr.str);
+
+    SM_String_clear(&append_cstr);
+
+    // string empty
+    String empty_str = SM_String_from("lots jibberish, like what am i even doing here, so crazy");
+
+    SM_String_empty(&empty_str);
+
+    SM_String_copy_cstr(&empty_str, "copy");
+    SM_String_append_cstr(&empty_str, " and append on empty str");
+
+    SM_log_warn(empty_str.str);
+
+    // djb2 hash
+    const char *djb2_str = "Thanks Mr. Bernstein";
+    char djb2_result[20];
+
+    uint32_t djb2_hash = SM_djb2_encode(djb2_str);
+    sprintf(djb2_result, "%u", djb2_hash);
+
+    SM_log_warn(djb2_result);
+
+    // end
+    fclose(SM_logfile);
 
 	return 0;
 }

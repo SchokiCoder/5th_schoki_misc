@@ -16,17 +16,11 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef SM_LOG_H
-#define SM_LOG_H
+#ifndef SM_CRYPTO_H
+#define SM_CRYPTO_H
 
-#include <stdio.h>
+#include <stdint.h>
 
-#define SM_PATH_LOG "log.txt"
+uint32_t SM_djb2_encode( const char *str );
 
-extern FILE *SM_logfile;
-
-void SM_log_err( const char *msg );
-
-void SM_log_warn( const char *msg );
-
-#endif // SM_LOG_H
+#endif // SM_CRYPTO_H

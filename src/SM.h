@@ -20,7 +20,7 @@
 #define SM_SM_H
 
 #define SM_API_MAJOR 0
-#define SM_API_MINOR 1
-#define SM_API_PATCH 3
+#define SM_API_MINOR 2
+#define SM_API_PATCH 0
 
-#endif /* SM_SM_H */
+#endif // SM_SM_H

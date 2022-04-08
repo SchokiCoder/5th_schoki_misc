@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include "SM_string.h"
 
-static const uint32_t SM_STRING_IMPLICIT_INITIAL_SIZE = 8;
+static const size_t SM_STRING_IMPLICIT_INITIAL_SIZE = 8;
 
 size_t SM_strlen( const char *cstr )
 {
@@ -32,10 +32,26 @@ size_t SM_strlen( const char *cstr )
 	return result;
 }
 
+void SM_strcpy( char *restrict dest, const char *restrict src, size_t len )
+{
+	for (size_t i = 0; i < len; i++)
+    {
+        dest[i] = src[i];
+    }
+
+    dest[len] = '\0';
+}
+
 void SM_String_grow( SM_String *str )
 {
 	str->size *= 2;
 	str->str = realloc(str->str, str->size);
+}
+
+void SM_String_ensure_size( SM_String *str, size_t size )
+{
+	while (str->size < size)
+    	SM_String_grow(str);
 }
 
 SM_String SM_String_new( size_t inital_size )
@@ -60,7 +76,6 @@ SM_String SM_String_from( const char *cstr )
 		.size = strlen
 	};
 
-	// copy string
 	SM_String_copy(&result, &temp);
 
 	return result;
@@ -80,38 +95,46 @@ SM_String SM_String_contain( const char *cstr )
 
 void SM_String_copy( SM_String *restrict dest, SM_String *restrict src )
 {
-	// as long as dest has not enough size, grow
-    while ((src->len + 1) > dest->size)
-    	SM_String_grow(dest);
+	SM_String_ensure_size(dest, src->len + 1);
 
-    // copy
-    for (uint_fast32_t i = 0; i < src->len; i++)
-    {
-        dest->str[i] = src->str[i];
-    }
+	SM_strcpy(dest->str, src->str, src->len);
 
-    dest->str[src->len] = '\0';
-
-    // update len
     dest->len = src->len;
 }
 
 void SM_String_append( SM_String *restrict dest, SM_String *restrict addendum )
 {
-	// as long as dest has not enough size, grow
-	while (dest->size < (dest->len + addendum->len + 1))
-		SM_String_grow(dest);
+	SM_String_ensure_size(dest, dest->len + addendum->len + 1);
 
-	// copy to end of src
-	for (uint_fast32_t i = 0; i < addendum->len; i++)
-	{
-		dest->str[dest->len + i] = addendum->str[i];
-	}
+	SM_strcpy(&dest->str[dest->len], addendum->str, addendum->len);
 
-	dest->str[dest->len + addendum->len] = '\0';
-
-	// update len
 	dest->len += addendum->len;
+}
+
+void SM_String_copy_cstr( SM_String *restrict dest, const char *restrict src )
+{
+	const size_t strlen = SM_strlen(src);
+	SM_String_ensure_size(dest, strlen);
+
+	SM_strcpy(dest->str, src, strlen);
+
+	dest->len = strlen;
+}
+
+void SM_String_append_cstr( SM_String *restrict dest, const char *restrict addendum )
+{
+	const size_t strlen = SM_strlen(addendum);
+	SM_String_ensure_size(dest, dest->len + strlen);
+
+	SM_strcpy(&dest->str[dest->len], addendum, strlen);
+
+	dest->len += strlen;
+}
+
+void SM_String_empty( SM_String *str )
+{
+	str->str[0] = '\0';
+    str->len = 0;
 }
 
 void SM_String_clear( SM_String *str )

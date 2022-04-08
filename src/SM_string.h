@@ -38,6 +38,12 @@ void SM_String_copy( SM_String *restrict dest, SM_String *restrict src );
 
 void SM_String_append( SM_String *restrict dest, SM_String *restrict addendum );
 
+void SM_String_copy_cstr( SM_String *restrict dest, const char *restrict src );
+
+void SM_String_append_cstr( SM_String *restrict dest, const char *restrict addendum );
+
+void SM_String_empty( SM_String *str );
+
 void SM_String_clear( SM_String *str );
 
-#endif /* SM_STRING_H */
+#endif // SM_STRING_H

@@ -11,7 +11,10 @@ SM_log.o:
 SM_string.o:
 	$(CC) -c -fPIC $(CFLAGS) src/SM_string.c
 
-$(SO_NAME): SM_log.o SM_string.o
+SM_crypto.o:
+	$(CC) -c -fPIC $(CFLAGS) src/SM_crypto.c
+
+$(SO_NAME): SM_log.o SM_string.o SM_crypto.o
 	$(CC) -shared -o $@ $^
 
 install:
