@@ -80,6 +80,16 @@ int main()
 
     SM_log_warn(empty_str.str);
 
+    // string equal
+    SM_String str_a, str_b, str_c;
+
+    str_a = SM_String_contain("my str");
+    str_b = SM_String_contain("my str");
+    str_c = SM_String_contain("ur str");
+
+    printf("should be 1: %i\n", SM_String_equal(&str_a, &str_b));
+    printf("should be 0: %i\n", SM_String_equal(&str_a, &str_c));
+
     // djb2 hash
     const char *djb2_str = "Thanks Mr. Bernstein";
     char djb2_result[20];
