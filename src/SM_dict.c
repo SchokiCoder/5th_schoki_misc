@@ -17,6 +17,7 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "SM_crypto.h"
 #include "SM_dict.h"
 
@@ -52,6 +53,7 @@ void SM_Dict_ensure_size( SM_Dict *dict, size_t size )
 SM_Dict SM_Dict_new( const size_t inital_size )
 {
 	SM_Dict result = {
+		.valid = SM_TRUE,
 		.len = 0,
 		.size = inital_size,
 		.data = malloc(sizeof(SM_DictPair) * inital_size),
@@ -62,7 +64,60 @@ SM_Dict SM_Dict_new( const size_t inital_size )
 
 SM_Dict SM_Dict_from_file( const char *filepath )
 {
-	return;
+	FILE *f;
+	SM_Dict dict = SM_Dict_new(1);
+	SM_String key = SM_String_new(8);
+	SM_String value = SM_String_new(8);
+	char buf[2] = "\0\0";
+	SM_bool read_key = SM_TRUE;
+
+	// open file
+	f = fopen(filepath, "r");
+
+	if (f == NULL)
+	{
+		dict.valid = SM_FALSE;
+		return dict;
+	}
+
+	// foreach read charcter
+	while ((buf[0] = fgetc(f)) != EOF)
+	{
+		switch (buf[0])
+		{
+		case ' ':
+			// ignore spaces
+			break;
+
+		case '=':
+			// set to read value
+			read_key = SM_FALSE;
+			break;
+
+		case '\n':
+			// save pair
+			SM_Dict_add(&dict, key.str, value.str);
+
+			// set to read key, reset strings
+			read_key = SM_TRUE;
+			SM_String_empty(&key);
+			SM_String_empty(&value);
+			break;
+
+		default:
+			// append character to key or value
+			if (read_key == SM_TRUE)
+				SM_String_append_cstr(&key, buf);
+
+			else
+				SM_String_append_cstr(&value, buf);
+
+			break;
+		}
+	}
+
+	fclose(f);
+	return dict;
 }
 
 void SM_Dict_add( SM_Dict *dict, const char *restrict key, const char *restrict value )
@@ -90,9 +145,27 @@ SM_bool SM_Dict_find( const SM_Dict *dict, const char *key, size_t *index )
 	return SM_FALSE;
 }
 
-void SM_Dict_write( SM_Dict *dict )
+SM_bool SM_Dict_write( const SM_Dict *dict, const char *filepath )
 {
-	return my_implementation;
+	FILE *f;
+
+	// open
+	f = fopen(filepath, "w");
+
+	if (f == NULL)
+		return SM_FALSE;
+
+	// write
+	for (size_t i = 0; i < dict->len; i++)
+	{
+		fprintf(f, "%s", dict->data[i].key.str);
+		fputs(" = ", f);
+		fprintf(f, "%s", dict->data[i].value.str);
+		fputc('\n', f);
+	}
+
+	fclose(f);
+	return SM_TRUE;
 }
 
 void SM_Dict_clear( SM_Dict *dict )

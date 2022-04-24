@@ -24,32 +24,53 @@ void find_print( SM_Dict *dict, const char *key )
 	size_t index;
 
 	if (SM_Dict_find(dict, key, &index))
-		printf("Found %s at %lu.\n", key, index);
+		printf("Found key \"%s\" at %lu.\n", key, index);
 
 	else
-		printf("Could not find %s.\n", key);
+		printf("Could not find key \"%s\".\n", key);
+}
+
+void get_print( SM_Dict *dict, const char *key )
+{
+	size_t index;
+
+	if (SM_Dict_find(dict, key, &index))
+    	printf("Dict <\"%s\" : \"%s\">\n", key, dict->data[index].value.str);
+
+	else
+		printf("ERROR: Could not find key \"%s\".\n", key);
 }
 
 int main()
 {
 	// dict
-	SM_Dict dict = SM_Dict_new(4);
+	SM_Dict dict = SM_Dict_new(1);
+	SM_Dict loaded_dict;
 
 	// dict add
 	SM_Dict_add(&dict, "key1", "val1");
+	SM_Dict_add(&dict, "key2", "i-must-sneeze-hard");
+	SM_Dict_add(&dict, "key3", "seriously-help-me");
 
 	// dict find
 	find_print(&dict, "key1");
 	find_print(&dict, "not-there");
 
 	// dict save
+	printf("File saved: %i\n", SM_Dict_write(&dict, "my_dict"));
 
 	// dict load
+	loaded_dict = SM_Dict_from_file("my_dict");
+
+	if (!loaded_dict.valid)
+		printf("ERROR: Dict could not be read from file.\n");
 
 	// dict get (from loaded)
+	get_print(&loaded_dict, "key2");
 
 	// dict clear
 	SM_Dict_clear(&dict);
+	SM_Dict_clear(&loaded_dict);
 
 	return 0;
 }

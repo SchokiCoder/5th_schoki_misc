@@ -32,6 +32,7 @@ typedef struct SM_DictPair
 
 typedef struct SM_Dict
 {
+	SM_bool valid;
 	size_t len;
 	size_t size;
 	SM_DictPair *data;
@@ -45,7 +46,7 @@ void SM_Dict_add( SM_Dict *dict, const char *restrict key, const char *restrict 
 
 SM_bool SM_Dict_find( const SM_Dict *dict, const char *key, size_t *index );
 
-void SM_Dict_write( SM_Dict *dict );
+SM_bool SM_Dict_write( const SM_Dict *dict, const char *filepath );
 
 void SM_Dict_clear( SM_Dict *dict );
 
