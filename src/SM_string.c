@@ -27,7 +27,7 @@ size_t SM_strlen( const char *cstr )
 	while (cstr[result] != '\0')
 		result++;
 
-	return result;
+	return result + 1;
 }
 
 void SM_strcpy( char *restrict dest, const char *restrict src, size_t len )
@@ -37,7 +37,7 @@ void SM_strcpy( char *restrict dest, const char *restrict src, size_t len )
         dest[i] = src[i];
     }
 
-    dest[len] = '\0';
+    dest[len - 1] = '\0';
 }
 
 SM_bool SM_strequal( const char *restrict a, const char *restrict b )
@@ -85,7 +85,7 @@ SM_String SM_String_from( const char *cstr )
 
 	SM_String temp = {
 		.str = (char*) cstr,
-		.len = strlen,
+		.len = strlen - 1,
 		.size = strlen
 	};
 
@@ -98,8 +98,8 @@ SM_String SM_String_contain( const char *cstr )
 {
     const size_t strlen = SM_strlen(cstr);
     const SM_String result = {
-    	.len = strlen,
-    	.size = strlen,
+    	.len = strlen - 1,
+    	.size = 0,
     	.str = (char*) cstr
     };
 
@@ -110,7 +110,7 @@ void SM_String_copy( SM_String *restrict dest, SM_String *restrict src )
 {
 	SM_String_ensure_size(dest, src->len + 1);
 
-	SM_strcpy(dest->str, src->str, src->len);
+	SM_strcpy(dest->str, src->str, src->len + 1);
 
     dest->len = src->len;
 }
@@ -119,29 +119,29 @@ void SM_String_append( SM_String *restrict dest, SM_String *restrict addendum )
 {
 	SM_String_ensure_size(dest, dest->len + addendum->len + 1);
 
-	SM_strcpy(&dest->str[dest->len], addendum->str, addendum->len);
+	SM_strcpy(&dest->str[dest->len], addendum->str, addendum->len + 1);
 
 	dest->len += addendum->len;
 }
 
 void SM_String_copy_cstr( SM_String *restrict dest, const char *restrict src )
 {
-	const size_t strlen = SM_strlen(src);
-	SM_String_ensure_size(dest, strlen);
+	const size_t src_len = SM_strlen(src);
+	SM_String_ensure_size(dest, src_len);
 
-	SM_strcpy(dest->str, src, strlen);
+	SM_strcpy(dest->str, src, src_len);
 
-	dest->len = strlen;
+	dest->len = src_len - 1;
 }
 
 void SM_String_append_cstr( SM_String *restrict dest, const char *restrict addendum )
 {
-	const size_t strlen = SM_strlen(addendum);
-	SM_String_ensure_size(dest, dest->len + strlen);
+	const size_t add_len = SM_strlen(addendum);
+	SM_String_ensure_size(dest, dest->len + add_len);
 
-	SM_strcpy(&dest->str[dest->len], addendum, strlen);
+	SM_strcpy(&dest->str[dest->len], addendum, add_len);
 
-	dest->len += strlen;
+	dest->len += add_len - 1;
 }
 
 SM_bool SM_String_equal( const SM_String *restrict a, const SM_String *restrict b )

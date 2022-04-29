@@ -25,8 +25,12 @@
 
 extern FILE *SM_logfile;
 
+void SM_log_open( void );
+
 void SM_log_err( const char *msg );
 
 void SM_log_warn( const char *msg );
+
+void SM_log_close( void );
 
 #endif // SM_LOG_H

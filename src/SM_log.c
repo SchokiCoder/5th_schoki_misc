@@ -22,6 +22,12 @@
 
 FILE *SM_logfile;
 
+void SM_log_open( void )
+{
+    SM_logfile = fopen(SM_PATH_LOG, "a");
+    setbuf(SM_logfile, NULL);
+}
+
 void SM_log_time( void )
 {
     time_t t = time(NULL);
@@ -45,4 +51,9 @@ void SM_log_warn( const char *msg )
 {
 	SM_log_time();
 	fprintf(SM_logfile, "WARNING: %s\n", msg);
+}
+
+void SM_log_close( void )
+{
+	fclose(SM_logfile);
 }

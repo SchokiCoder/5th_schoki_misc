@@ -25,7 +25,7 @@ typedef SM_String String;
 int main()
 {
 	// log
-	SM_logfile = fopen(SM_PATH_LOG, "a");
+	SM_log_open();
 	SM_log_warn("Oh no, i don't have a string yet.");
 
 	// string from, contain, append
@@ -33,7 +33,7 @@ int main()
 	String str_contain = SM_String_contain(", i like it");
 
     if (str_from.len < 40)
-    	SM_log_err("My string is so small, is funny to me.");
+    	SM_log_warn("My string is so small, is funny to me.");
 
     SM_String_append(&str_from, &str_contain);
 
@@ -80,6 +80,8 @@ int main()
 
     SM_log_warn(empty_str.str);
 
+    SM_String_clear(&empty_str);
+
     // string equal
     SM_String str_a, str_b, str_c;
 
@@ -100,7 +102,7 @@ int main()
     SM_log_warn(djb2_result);
 
     // end
-    fclose(SM_logfile);
+    SM_log_close();
 
 	return 0;
 }

@@ -32,7 +32,7 @@ typedef struct SM_DictPair
 
 typedef struct SM_Dict
 {
-	SM_bool valid;
+	SM_bool invalid;
 	size_t len;
 	size_t size;
 	SM_DictPair *data;

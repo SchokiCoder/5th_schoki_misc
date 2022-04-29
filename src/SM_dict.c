@@ -53,7 +53,7 @@ void SM_Dict_ensure_size( SM_Dict *dict, size_t size )
 SM_Dict SM_Dict_new( const size_t inital_size )
 {
 	SM_Dict result = {
-		.valid = SM_TRUE,
+		.invalid = SM_FALSE,
 		.len = 0,
 		.size = inital_size,
 		.data = malloc(sizeof(SM_DictPair) * inital_size),
@@ -66,21 +66,22 @@ SM_Dict SM_Dict_from_file( const char *filepath )
 {
 	FILE *f;
 	SM_Dict dict = SM_Dict_new(1);
-	SM_String key = SM_String_new(8);
-	SM_String value = SM_String_new(8);
-	char buf[2] = "\0\0";
-	SM_bool read_key = SM_TRUE;
 
 	// open file
 	f = fopen(filepath, "r");
 
 	if (f == NULL)
 	{
-		dict.valid = SM_FALSE;
+		dict.invalid = SM_TRUE;
 		return dict;
 	}
 
-	// foreach read charcter
+	// read each character
+	char buf[2] = "\0\0";
+	SM_bool read_key = SM_TRUE;
+	SM_String key = SM_String_new(8);
+	SM_String value = SM_String_new(8);
+
 	while ((buf[0] = fgetc(f)) != EOF)
 	{
 		switch (buf[0])
@@ -117,6 +118,8 @@ SM_Dict SM_Dict_from_file( const char *filepath )
 	}
 
 	fclose(f);
+	SM_String_clear(&key);
+	SM_String_clear(&value);
 	return dict;
 }
 

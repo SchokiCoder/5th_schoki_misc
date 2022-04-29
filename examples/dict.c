@@ -62,7 +62,7 @@ int main()
 	// dict load
 	loaded_dict = SM_Dict_from_file("my_dict");
 
-	if (!loaded_dict.valid)
+	if (loaded_dict.invalid)
 		printf("ERROR: Dict could not be read from file.\n");
 
 	// dict get (from loaded)
