@@ -21,7 +21,7 @@
 
 void find_print( SM_Dict *dict, const char *key )
 {
-	size_t index;
+	ul32_t index;
 
 	if (SM_Dict_find(dict, key, &index))
 		printf("Found key \"%s\" at %lu.\n", key, index);
@@ -32,7 +32,7 @@ void find_print( SM_Dict *dict, const char *key )
 
 void get_print( SM_Dict *dict, const char *key )
 {
-	size_t index;
+	ul32_t index;
 
 	if (SM_Dict_find(dict, key, &index))
     	printf("Dict <\"%s\" : \"%s\">\n", key, dict->data[index].value.str);

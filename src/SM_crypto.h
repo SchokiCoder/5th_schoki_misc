@@ -19,8 +19,8 @@
 #ifndef SM_CRYPTO_H
 #define SM_CRYPTO_H
 
-#include <stdint.h>
+#include "SM_types.h"
 
-uint32_t SM_djb2_encode( const char *str );
+u32_t SM_djb2_encode( const char *str );
 
 #endif // SM_CRYPTO_H

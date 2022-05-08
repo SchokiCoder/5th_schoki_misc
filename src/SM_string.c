@@ -17,12 +17,11 @@
 */
 
 #include <stdlib.h>
-#include <stdint.h>
 #include "SM_string.h"
 
-size_t SM_strlen( const char *cstr )
+ul32_t SM_strlen( const char *cstr )
 {
-	size_t result = 0;
+	ul32_t result = 0;
 
 	while (cstr[result] != '\0')
 		result++;
@@ -30,9 +29,9 @@ size_t SM_strlen( const char *cstr )
 	return result + 1;
 }
 
-void SM_strcpy( char *restrict dest, const char *restrict src, size_t len )
+void SM_strcpy( char *restrict dest, const char *restrict src, ul32_t len )
 {
-	for (size_t i = 0; i < len; i++)
+	for (ul32_t i = 0; i < len; i++)
     {
         dest[i] = src[i];
     }
@@ -40,19 +39,19 @@ void SM_strcpy( char *restrict dest, const char *restrict src, size_t len )
     dest[len - 1] = '\0';
 }
 
-SM_bool SM_strequal( const char *restrict a, const char *restrict b )
+bool_t SM_strequal( const char *restrict a, const char *restrict b )
 {
-	const size_t a_len = SM_strlen(a);
-	const size_t b_len = SM_strlen(b);
+	const ul32_t a_len = SM_strlen(a);
+	const ul32_t b_len = SM_strlen(b);
 
 	if (a_len != b_len)
-		return SM_FALSE;
+		return FALSE;
 
-	for (size_t i = 0; i < a_len; i++)
+	for (ul32_t i = 0; i < a_len; i++)
     	if (a[i] != b[i])
-    		return SM_FALSE;
+    		return FALSE;
 
-	return SM_TRUE;
+	return TRUE;
 }
 
 void SM_String_grow( SM_String *str )
@@ -61,13 +60,13 @@ void SM_String_grow( SM_String *str )
 	str->str = realloc(str->str, str->size);
 }
 
-void SM_String_ensure_size( SM_String *str, size_t size )
+void SM_String_ensure_size( SM_String *str, ul32_t size )
 {
 	while (str->size < size)
     	SM_String_grow(str);
 }
 
-SM_String SM_String_new( const size_t inital_size )
+SM_String SM_String_new( const ul32_t inital_size )
 {
 	SM_String result = {
 		.len = 0,
@@ -81,7 +80,7 @@ SM_String SM_String_new( const size_t inital_size )
 SM_String SM_String_from( const char *cstr )
 {
 	SM_String result = SM_String_new(SM_STRING_IMPLICIT_INITIAL_SIZE);
-	const size_t strlen = SM_strlen(cstr);
+	const ul32_t strlen = SM_strlen(cstr);
 
 	SM_String temp = {
 		.str = (char*) cstr,
@@ -96,7 +95,7 @@ SM_String SM_String_from( const char *cstr )
 
 SM_String SM_String_contain( const char *cstr )
 {
-    const size_t strlen = SM_strlen(cstr);
+    const ul32_t strlen = SM_strlen(cstr);
     const SM_String result = {
     	.len = strlen - 1,
     	.size = 0,
@@ -126,7 +125,7 @@ void SM_String_append( SM_String *restrict dest, SM_String *restrict addendum )
 
 void SM_String_copy_cstr( SM_String *restrict dest, const char *restrict src )
 {
-	const size_t src_len = SM_strlen(src);
+	const ul32_t src_len = SM_strlen(src);
 	SM_String_ensure_size(dest, src_len);
 
 	SM_strcpy(dest->str, src, src_len);
@@ -136,7 +135,7 @@ void SM_String_copy_cstr( SM_String *restrict dest, const char *restrict src )
 
 void SM_String_append_cstr( SM_String *restrict dest, const char *restrict addendum )
 {
-	const size_t add_len = SM_strlen(addendum);
+	const ul32_t add_len = SM_strlen(addendum);
 	SM_String_ensure_size(dest, dest->len + add_len);
 
 	SM_strcpy(&dest->str[dest->len], addendum, add_len);
@@ -144,16 +143,16 @@ void SM_String_append_cstr( SM_String *restrict dest, const char *restrict adden
 	dest->len += add_len - 1;
 }
 
-SM_bool SM_String_equal( const SM_String *restrict a, const SM_String *restrict b )
+bool_t SM_String_equal( const SM_String *restrict a, const SM_String *restrict b )
 {
 	if (a->len != b->len)
-		return SM_FALSE;
+		return FALSE;
 
-	for (size_t i = 0; i < a->len; i++)
+	for (ul32_t i = 0; i < a->len; i++)
 		if (a->str[i] != b->str[i])
-			return SM_FALSE;
+			return FALSE;
 
-	return SM_TRUE;
+	return TRUE;
 }
 
 void SM_String_empty( SM_String *str )

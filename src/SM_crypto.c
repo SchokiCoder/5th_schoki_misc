@@ -18,10 +18,10 @@
 
 #include "SM_crypto.h"
 
-uint32_t SM_djb2_encode( const char *str )
+u32_t SM_djb2_encode( const char *str )
 {
 	// credits to Daniel J. Bernstein for this algorithm
-	uint32_t result = 5381;
+	u32_t result = 5381;
 	char temp;
 
 	while ((temp = *(str++)))

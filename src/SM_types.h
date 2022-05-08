@@ -16,13 +16,30 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef SM_BOOL_H
-#define SM_BOOL_H
+#ifndef SM_TYPES_H
+#define SM_TYPES_H
 
-typedef enum SM_bool
+#include <stdint.h>
+
+typedef enum bool_t
 {
-	SM_FALSE = 0,
-	SM_TRUE = 1
-} SM_bool ;
+	FALSE = 0,
+	TRUE = 1
+} bool_t ;
 
-#endif // SM_BOOL_H
+typedef int8_t			s8_t;
+typedef uint8_t			u8_t;
+typedef int_fast8_t		sl8_t;
+typedef uint_fast8_t	ul8_t;
+typedef int16_t			s16_t;
+typedef uint16_t		u16_t;
+typedef int_fast16_t	sl16_t;
+typedef uint_fast16_t	ul16_t;
+typedef int32_t			s32_t;
+typedef uint32_t		u32_t;
+typedef int_fast32_t	sl32_t;
+typedef uint_fast32_t	ul32_t;
+typedef int64_t			s64_t;
+typedef uint64_t		u64_t;
+
+#endif // SM_TYPES_H

@@ -19,34 +19,32 @@
 #ifndef SM_DICT_H
 #define SM_DICT_H
 
-#include <stddef.h>
-#include <stdint.h>
 #include "SM_string.h"
 
 typedef struct SM_DictPair
 {
-	uint32_t key_djb2;
+	u32_t key_djb2;
 	SM_String key;
 	SM_String value;
 } SM_DictPair ;
 
 typedef struct SM_Dict
 {
-	SM_bool invalid;
-	size_t len;
-	size_t size;
+	bool_t invalid;
+	ul32_t len;
+	ul32_t size;
 	SM_DictPair *data;
 } SM_Dict ;
 
-SM_Dict SM_Dict_new( const size_t inital_size );
+SM_Dict SM_Dict_new( const ul32_t inital_size );
 
 SM_Dict SM_Dict_from_file( const char *filepath );
 
 void SM_Dict_add( SM_Dict *dict, const char *restrict key, const char *restrict value );
 
-SM_bool SM_Dict_find( const SM_Dict *dict, const char *key, size_t *index );
+bool_t SM_Dict_find( const SM_Dict *dict, const char *key, ul32_t *index );
 
-SM_bool SM_Dict_write( const SM_Dict *dict, const char *filepath );
+bool_t SM_Dict_write( const SM_Dict *dict, const char *filepath );
 
 void SM_Dict_clear( SM_Dict *dict );
 

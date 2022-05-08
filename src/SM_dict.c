@@ -44,16 +44,16 @@ void SM_Dict_grow( SM_Dict *dict )
 	dict->data = realloc(dict->data, sizeof(SM_DictPair) * dict->size);
 }
 
-void SM_Dict_ensure_size( SM_Dict *dict, size_t size )
+void SM_Dict_ensure_size( SM_Dict *dict, ul32_t size )
 {
 	while (dict->size < size)
     	SM_Dict_grow(dict);
 }
 
-SM_Dict SM_Dict_new( const size_t inital_size )
+SM_Dict SM_Dict_new( const ul32_t inital_size )
 {
 	SM_Dict result = {
-		.invalid = SM_FALSE,
+		.invalid = FALSE,
 		.len = 0,
 		.size = inital_size,
 		.data = malloc(sizeof(SM_DictPair) * inital_size),
@@ -72,13 +72,13 @@ SM_Dict SM_Dict_from_file( const char *filepath )
 
 	if (f == NULL)
 	{
-		dict.invalid = SM_TRUE;
+		dict.invalid = TRUE;
 		return dict;
 	}
 
 	// read each character
 	char buf[2] = "\0\0";
-	SM_bool read_key = SM_TRUE;
+	bool_t read_key = TRUE;
 	SM_String key = SM_String_new(8);
 	SM_String value = SM_String_new(8);
 
@@ -92,7 +92,7 @@ SM_Dict SM_Dict_from_file( const char *filepath )
 
 		case '=':
 			// set to read value
-			read_key = SM_FALSE;
+			read_key = FALSE;
 			break;
 
 		case '\n':
@@ -100,14 +100,14 @@ SM_Dict SM_Dict_from_file( const char *filepath )
 			SM_Dict_add(&dict, key.str, value.str);
 
 			// set to read key, reset strings
-			read_key = SM_TRUE;
+			read_key = TRUE;
 			SM_String_empty(&key);
 			SM_String_empty(&value);
 			break;
 
 		default:
 			// append character to key or value
-			if (read_key == SM_TRUE)
+			if (read_key == TRUE)
 				SM_String_append_cstr(&key, buf);
 
 			else
@@ -132,23 +132,23 @@ void SM_Dict_add( SM_Dict *dict, const char *restrict key, const char *restrict 
 	dict->len++;
 }
 
-SM_bool SM_Dict_find( const SM_Dict *dict, const char *key, size_t *index )
+bool_t SM_Dict_find( const SM_Dict *dict, const char *key, ul32_t *index )
 {
-	const uint32_t key_djb2 = SM_djb2_encode(key);
+	const u32_t key_djb2 = SM_djb2_encode(key);
 
-	for (size_t i = 0; i < dict->len; i++)
+	for (ul32_t i = 0; i < dict->len; i++)
 	{
 		if (dict->data[i].key_djb2 == key_djb2)
 		{
 			*index = i;
-			return SM_TRUE;
+			return TRUE;
 		}
 	}
 
-	return SM_FALSE;
+	return FALSE;
 }
 
-SM_bool SM_Dict_write( const SM_Dict *dict, const char *filepath )
+bool_t SM_Dict_write( const SM_Dict *dict, const char *filepath )
 {
 	FILE *f;
 
@@ -156,10 +156,10 @@ SM_bool SM_Dict_write( const SM_Dict *dict, const char *filepath )
 	f = fopen(filepath, "w");
 
 	if (f == NULL)
-		return SM_FALSE;
+		return FALSE;
 
 	// write
-	for (size_t i = 0; i < dict->len; i++)
+	for (ul32_t i = 0; i < dict->len; i++)
 	{
 		fprintf(f, "%s", dict->data[i].key.str);
 		fputs(" = ", f);
@@ -168,12 +168,12 @@ SM_bool SM_Dict_write( const SM_Dict *dict, const char *filepath )
 	}
 
 	fclose(f);
-	return SM_TRUE;
+	return TRUE;
 }
 
 void SM_Dict_clear( SM_Dict *dict )
 {
-	for (size_t i = 0; i < dict->len; i++)
+	for (ul32_t i = 0; i < dict->len; i++)
 		SM_DictPair_clear(&dict->data[i]);
 
 	free(dict->data);
