@@ -21,6 +21,6 @@
 
 #include "SM_types.h"
 
-u32_t SM_djb2_encode( const char *str );
+usize SM_djb2_encode( const char *str );
 
 #endif // SM_CRYPTO_H

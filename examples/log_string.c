@@ -96,7 +96,7 @@ int main()
     const char *djb2_str = "Thanks Mr. Bernstein";
     char djb2_result[20];
 
-    u32_t djb2_hash = SM_djb2_encode(djb2_str);
+    usize djb2_hash = SM_djb2_encode(djb2_str);
     sprintf(djb2_result, "%u", djb2_hash);
 
     SM_log_warn(djb2_result);

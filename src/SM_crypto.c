@@ -18,10 +18,10 @@
 
 #include "SM_crypto.h"
 
-u32_t SM_djb2_encode( const char *str )
+usize SM_djb2_encode( const char *str )
 {
 	// credits to Daniel J. Bernstein for this algorithm
-	u32_t result = 5381;
+	usize result = 5381;
 	char temp;
 
 	while ((temp = *(str++)))

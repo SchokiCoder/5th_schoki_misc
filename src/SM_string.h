@@ -19,24 +19,25 @@
 #ifndef SM_STRING_H
 #define SM_STRING_H
 
+#include <stdbool.h>
 #include "SM_types.h"
 
-static const ul32_t SM_STRING_IMPLICIT_INITIAL_SIZE = 8;
+static const usize SM_STRING_IMPLICIT_INITIAL_SIZE = 8;
 
-ul32_t SM_strlen( const char *cstr );
+usize SM_strlen( const char *cstr );
 
-void SM_strcpy( char *restrict dest, const char *restrict src, ul32_t len );
+void SM_strcpy( char *restrict dest, const char *restrict src, usize len );
 
-bool_t SM_strequal( const char *restrict a, const char *restrict b );
+bool SM_strequal( const char *restrict a, const char *restrict b );
 
 typedef struct SM_String
 {
-	ul32_t len;
-	ul32_t size;
+	usize len;
+	usize size;
 	char *str;
 } SM_String ;
 
-SM_String SM_String_new( const ul32_t initial_size );
+SM_String SM_String_new( const usize initial_size );
 
 SM_String SM_String_from( const char *cstr );
 
@@ -50,7 +51,7 @@ void SM_String_copy_cstr( SM_String *restrict dest, const char *restrict src );
 
 void SM_String_append_cstr( SM_String *restrict dest, const char *restrict addendum );
 
-bool_t SM_String_equal( const SM_String *restrict a, const SM_String *restrict b );
+bool SM_String_equal( const SM_String *restrict a, const SM_String *restrict b );
 
 void SM_String_empty( SM_String *str );
 
