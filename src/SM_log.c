@@ -1,20 +1,21 @@
 /*
-	schoki_misc
-	Copyright (C) 2022	Andy Frank Schoknecht
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * schoki_misc
+ * Copyright (C) 2022  Andy Frank Schoknecht
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not see
+ * <https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html>.
+ */
 
 #include <stdio.h>
 #include <time.h>
@@ -22,38 +23,37 @@
 
 FILE *SM_logfile;
 
-void SM_log_open( void )
+void SM_log_open(void)
 {
-    SM_logfile = fopen(SM_PATH_LOG, "a");
-    setbuf(SM_logfile, NULL);
+	SM_logfile = fopen(SM_PATH_LOG, "a");
+	setbuf(SM_logfile, NULL);
 }
 
-void SM_log_time( void )
+void SM_log_time(void)
 {
-    time_t t = time(NULL);
-    struct tm *dt;
-    dt = localtime(&t);
+	time_t t = time(NULL);
+	struct tm *dt;
+	dt = localtime(&t);
 
-	fprintf(
-		SM_logfile,
+	fprintf(SM_logfile,
 		"[%i-%02i-%02i %02i:%02i:%02i] ",
 		dt->tm_year + 1900, dt->tm_mon + 1, dt->tm_mday,
 		dt->tm_hour, dt->tm_min, dt->tm_sec);
 }
 
-void SM_log_err( const char *msg )
+void SM_log_err(const char *msg)
 {
 	SM_log_time();
 	fprintf(SM_logfile, "ERROR: %s\n", msg);
 }
 
-void SM_log_warn( const char *msg )
+void SM_log_warn(const char *msg)
 {
 	SM_log_time();
 	fprintf(SM_logfile, "WARNING: %s\n", msg);
 }
 
-void SM_log_close( void )
+void SM_log_close(void)
 {
 	fclose(SM_logfile);
 }
